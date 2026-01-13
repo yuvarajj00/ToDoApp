@@ -1,0 +1,111 @@
+<div class="task-detail-container" *ngIf="task">
+  <div class="header">
+    <button class="btn-back" (click)="goBack()">← Back to Tasks</button>
+    <button class="btn-edit" (click)="editTask()">Edit Task</button>
+  </div>
+
+  <div class="task-info">
+    <div class="task-header">
+      <h1>{{ task.title }}</h1>
+      <span [class]="getStatusClass(task.status)" class="status-badge">
+        {{ task.status }}
+      </span>
+    </div>
+
+    <p class="task-description">{{ task.description }}</p>
+
+    <div class="task-meta">
+      <div class="meta-item">
+        <strong>Due Date:</strong> {{ formatDate(task.dueDate) }}
+      </div>
+      <div class="meta-item">
+        <strong>Subtasks:</strong> {{ task.toDoItems.length }}
+      </div>
+    </div>
+
+    <div class="progress-section" *ngIf="task.toDoItems.length > 0">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getCompletionPercentage()"></div>
+      </div>
+      <p class="progress-text">{{ getCompletionPercentage() }}% Complete</p>
+    </div>
+  </div>
+
+  <div class="subtasks-section">
+    <h2>Subtasks</h2>
+
+    <div class="add-todo-form">
+      <input 
+        type="text" 
+        [(ngModel)]="newTodoDescription" 
+        placeholder="Enter subtask description"
+        class="input-field"
+        (keyup.enter)="addTodo()">
+      <input 
+        type="date" 
+        [(ngModel)]="newTodoDueDate" 
+        class="input-date">
+      <button class="btn-add" (click)="addTodo()">Add Subtask</button>
+    </div>
+
+    <div class="todos-list" *ngIf="task.toDoItems.length > 0">
+      <div 
+        *ngFor="let todo of task.toDoItems" 
+        class="todo-item"
+        [class.completed]="todo.status === 'Completed'">
+        
+        <div *ngIf="editingTodoId !== todo.id" class="todo-view">
+          <div class="todo-checkbox">
+            <input 
+              type="checkbox" 
+              [checked]="todo.status === 'Completed'"
+              (change)="toggleTodoStatus(todo)"
+              class="checkbox">
+          </div>
+          <div class="todo-content">
+            <p class="todo-description">{{ todo.description }}</p>
+            <p class="todo-date">{{ formatDate(todo.dueDate) }}</p>
+          </div>
+          <div class="todo-status">
+            <span [class]="getStatusClass(todo.status)" class="status-badge-small">
+              {{ todo.status }}
+            </span>
+          </div>
+          <div class="todo-actions">
+            <button class="btn-icon" (click)="startEditTodo(todo)" title="Edit">
+              ✎
+            </button>
+            <button class="btn-icon btn-delete-icon" (click)="deleteTodo(todo.id)" title="Delete">
+              ×
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="editingTodoId === todo.id" class="todo-edit">
+          <input 
+            type="text" 
+            [(ngModel)]="editTodoDescription" 
+            class="input-field"
+            placeholder="Description">
+          <input 
+            type="date" 
+            [(ngModel)]="editTodoDueDate" 
+            class="input-date">
+          <select [(ngModel)]="editTodoStatus" class="input-select">
+            <option value="New">New</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <div class="edit-actions">
+            <button class="btn-save" (click)="saveEditTodo()">Save</button>
+            <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="task.toDoItems.length === 0">
+      <p>No subtasks yet. Add your first subtask above!</p>
+    </div>
+  </div>
+</div>
