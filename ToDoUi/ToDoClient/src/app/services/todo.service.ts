@@ -7,7 +7,7 @@ import { ToDoItem, CreateToDoDto, UpdateToDoDto } from '../models/task.model';
   providedIn: 'root'
 })
 export class TodoService {
-  private apiUrl = 'http://localhost:5000/api/todos';
+  private apiUrl = 'http://localhost:5007/api/todos';
 
   constructor(private http: HttpClient) { }
 

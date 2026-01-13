@@ -13,8 +13,7 @@ namespace ToDoApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("ToDoAppDb"));
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Register repositories
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
@@ -29,7 +28,7 @@ namespace ToDoApp
             {
                 options.AddPolicy("AllowAngularApp",
                     builder => builder
-                        .WithOrigins("http://localhost:4200")
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
             });
@@ -40,6 +39,13 @@ namespace ToDoApp
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            // Ensure database is created
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                dbContext.Database.EnsureCreated();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
