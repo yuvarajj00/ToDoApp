@@ -15,7 +15,7 @@ namespace ToDoApp.Models
         [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
 
-        public DateTime? DueDate { get; set; }
+        public DateTimeOffset? DueDate { get; set; }
 
         public TaskStatus Status { get; set; } = TaskStatus.New;
 

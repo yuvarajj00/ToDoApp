@@ -43,7 +43,7 @@ namespace ToDoApp.Services
             {
                 TaskId = toDoDto.TaskId,
                 Description = toDoDto.Description,
-                DueDate = toDoDto.DueDate,
+                DueDate = toDoDto.DueDate?.ToUniversalTime(),
                 Status = Enum.TryParse<Models.TaskStatus>(toDoDto.Status, true, out var status) 
                     ? status 
                     : Models.TaskStatus.New
@@ -59,7 +59,7 @@ namespace ToDoApp.Services
             if (todo == null) return null;
 
             todo.Description = toDoDto.Description;
-            todo.DueDate = toDoDto.DueDate;
+            todo.DueDate = toDoDto.DueDate?.ToUniversalTime();
             todo.Status = Enum.TryParse<Models.TaskStatus>(toDoDto.Status, true, out var status) 
                 ? status 
                 : todo.Status;

@@ -7,7 +7,7 @@ namespace ToDoApp.DTOs
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public DateTime? DueDate { get; set; }
+        public DateTimeOffset? DueDate { get; set; }
         public string Status { get; set; } = "New";
         public List<ToDoItemDto> ToDoItems { get; set; } = new List<ToDoItemDto>();
     }
@@ -16,7 +16,7 @@ namespace ToDoApp.DTOs
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public DateTime? DueDate { get; set; }
+        public DateTimeOffset? DueDate { get; set; }
         public string Status { get; set; } = "New";
     }
 
@@ -24,7 +24,7 @@ namespace ToDoApp.DTOs
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public DateTime? DueDate { get; set; }
+        public DateTimeOffset? DueDate { get; set; }
         public string Status { get; set; } = "New";
     }
 }
